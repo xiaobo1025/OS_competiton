@@ -24,7 +24,7 @@ def get_cpu_info():
         "cpu_count": psutil.cpu_count(logical=False),  # 物理核心数
         "cpu_count_logical": psutil.cpu_count(logical=True),  # 逻辑核心数
     }
-
+ 
     # 1. 获取全局CFS调度器参数
     cfs_params = {}
     cfs_path = "/sys/fs/cgroup/cpu"
@@ -77,5 +77,7 @@ def get_cpu_info():
     except:
         data["current_process_scheduler"] = "N/A"
 
-    return data
+    return datas
+
+    
 

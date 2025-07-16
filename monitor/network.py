@@ -8,7 +8,7 @@ def get_network_info():
         "bytes_recv": net.bytes_recv
     }
 '''
-
+  
 
 import psutil
 import socket

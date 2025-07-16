@@ -30,4 +30,4 @@ def get_file_info():
         "total_open_files": total_open_files,  # 系统层面大致的总文件打开数（遍历进程统计）
         "avg_open_files_per_process": avg_open_files_per_proc,  # 进程平均打开文件数
         "max_open_files_per_process": max_open_files_per_proc  # 单个进程最大打开文件数
-    }
+    }  

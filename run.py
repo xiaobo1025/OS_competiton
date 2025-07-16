@@ -62,7 +62,7 @@ if __name__ == "__main__":
                 else:
                     print("ℹ️ 当前不建议修改系统参数")
                 last_workload = workload
-
+  
             # Step 4: 打印简要信息（使用增量值）
             print(
                 f"[{metrics['timestamp']}] {workload.upper()} "

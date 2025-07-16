@@ -17,5 +17,5 @@ def get_gpu_info(gpu_id=0):
             "gpu_mem_used": -1,
             "gpu_temp": -1,
             "gpu_power": -1
-        }
+        }  
 

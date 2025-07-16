@@ -71,7 +71,7 @@ def get_hugepage_info():
             return {"hugepage_size": hugepage_size}
     except:
         return {"hugepage_size": -1}
-
+  
 # 辅助函数：获取缓存管理信息（页缓存、slab缓存）
 def get_cache_stats():
     try:

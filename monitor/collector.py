@@ -26,5 +26,5 @@ def collect_all_metrics():
         "reno": 2
     }.get(algo, -1)
 
-    return data
+    return data 
 
