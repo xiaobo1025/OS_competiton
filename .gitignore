@@ -1,1 +1,6 @@
 tempfile
+__pycache__/
+*.pyc
+*.log
+*.pkl
+*.pt
