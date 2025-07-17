@@ -1,24 +1,3 @@
-'''
-import pandas as pd
-import time
-from monitor.collector import collect_all_metrics
-
-if __name__ == "__main__":
-    all_data = []
-    print("🔍 正在开始系统状态采集，按 Ctrl+C 停止...")
-    try:
-        while True:
-            metrics = collect_all_metrics()
-            print(f"[{metrics['timestamp']}] 收集成功：{metrics['cpu_percent']}% CPU, {metrics['gpu_util']}% GPU")
-            all_data.append(metrics)
-            time.sleep(5)
-    except KeyboardInterrupt:
-        print("⛔ 停止采集，正在保存数据...")
-        df = pd.DataFrame(all_data)
-        df.to_csv("system_metrics_log.csv", index=False)
-        print("✅ 已保存到 system_metrics_log.csv")
-'''
-
 import pandas as pd
 import time
 from monitor.collector import collect_all_metrics
@@ -43,7 +22,8 @@ if __name__ == "__main__":
             # Step 3: 如果负载类型发生变化 → 自动调优
             if workload != last_workload:
                 print(f"\n⚙️ 检测到负载变化：{last_workload} ➜ {workload}")
-                params = recommend_params(workload)
+                #params = recommend_params(workload)
+                params = recommend_params(metrics)
                 if params:
                     print(f"🚀 推荐参数：{params}")
                     apply_sysctl_params(params)

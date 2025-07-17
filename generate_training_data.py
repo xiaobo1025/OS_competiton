@@ -10,7 +10,7 @@ def run_stress_mem(duration=10):
     return subprocess.Popen(['stress', '--vm', '2', '--vm-bytes', '1G', '--timeout', str(duration)])
 
 def run_stress_io(filename="tempfile", duration=10):
-    return subprocess.Popen(['dd', 'if=/dev/zero', f'of={filename}', 'bs=1M', 'count=1024'])
+    return subprocess.Popen(['bash', '-c', f'for i in $(seq 1 {duration}); do dd if=/dev/zero of={filename} bs=10M count=1 oflag=dsync; sleep 1; done'])
 
 def sample_metrics(label, duration=10, interval=2):
     data = []
@@ -28,12 +28,12 @@ def generate_all():
 
     # CPU Bound
     cpu_proc = run_stress_cpu()
-    all_data += sample_metrics("cpu_bound", duration=10)
+    all_data += sample_metrics("cpu_bound", duration=30)
     cpu_proc.wait()
 
     # IO Bound
     io_proc = run_stress_io()
-    all_data += sample_metrics("io_bound", duration=10)
+    all_data += sample_metrics("io_bound", duration=30)
     io_proc.terminate()
 
     # Memory Bound
@@ -41,12 +41,17 @@ def generate_all():
     all_data += sample_metrics("memory_bound", duration=10)
     mem_proc.wait()
 
-    # Mixed
+    # Mixed: CPU + Mem + IO
     cpu_proc = run_stress_cpu()
     mem_proc = run_stress_mem()
-    all_data += sample_metrics("mixed", duration=10)
+    io_proc = run_stress_io()
+    all_data += sample_metrics("mixed", duration=30)
     cpu_proc.wait()
     mem_proc.wait()
+    io_proc.terminate()
+
+    # 清理文件
+    subprocess.run(["rm", "-f", "tempfile"])
 
     # 保存结果
     df = pd.DataFrame(all_data)
