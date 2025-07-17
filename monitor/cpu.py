@@ -77,7 +77,7 @@ def get_cpu_info():
     except:
         data["current_process_scheduler"] = "N/A"
 
-    return datas
+    return data
 
     
 
