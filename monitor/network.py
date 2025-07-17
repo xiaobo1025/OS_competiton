@@ -131,5 +131,4 @@ def get_network_info():
                     break
     except:
         pass
-    
     return data

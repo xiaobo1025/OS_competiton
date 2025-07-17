@@ -27,4 +27,3 @@ def collect_all_metrics():
     }.get(algo, -1)
 
     return data 
-

@@ -87,3 +87,4 @@ def get_cache_stats():
             }
     except:
         return {"page_cache": -1, "slab_cache": -1}
+

@@ -79,4 +79,3 @@ def get_tcp_congestion():
 def get_sysctl_value(param):
     result = subprocess.run(['sysctl', param], capture_output=True, text=True)
     return result.stdout.strip().split('=')[1].strip()
-

@@ -79,5 +79,3 @@ def get_cpu_info():
 
     return data
 
-    
-
