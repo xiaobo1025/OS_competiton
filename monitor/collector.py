@@ -2,7 +2,7 @@ from datetime import datetime
 from monitor.cpu import get_cpu_info
 from monitor.gpu import get_gpu_info
 from monitor.memory import get_memory_info
-from monitor.io import get_disk_io
+from monitor.io_runtime import get_disk_io
 from monitor.network import get_network_info
 from monitor.tcp import get_tcp_congestion
 
