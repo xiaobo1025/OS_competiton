@@ -84,6 +84,16 @@ def recommend_params(metrics: dict) -> dict:
         print("⚠️ 模型未加载，返回空参数组合")
         return {}
 
+
+    # 构造输入特征行（缺失填 0，确保为 float 类型）
+    row = {}
+    for feature in FEATURE_COLUMNS:
+        val = metrics.get(feature, 0)
+        try:
+            row[feature] = float(val)
+        except:
+            row[feature] = 0.0
+
     # 构造输入特征行（缺失填 0）
     row = {feature: metrics.get(feature, 0) for feature in FEATURE_COLUMNS}
 
