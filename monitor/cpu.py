@@ -8,3 +8,9 @@ def get_cpu_info():
         "load_avg_15": psutil.getloadavg()[2]
     }
 
+
+if __name__ == "__main__":
+    import json
+    cpu_data = get_cpu_info()
+    print(json.dumps(cpu_data, indent=2))
+

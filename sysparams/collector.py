@@ -5,7 +5,7 @@
 from sysparams.kernel import get_kernel_params
 from sysparams.vm import get_vm_params
 from sysparams.net import get_all_net_params as get_net_params
-from sysparams.io import get_io_params
+#from sysparams.io import get_io_params
 
 def collect_all_sysparams():
     params = {}
@@ -28,6 +28,7 @@ def collect_all_sysparams():
             params["tcp_wmem_default"] = int(wmem_parts[1])
             params["tcp_wmem_max"] = int(wmem_parts[2])
 
+    '''
     # 只采第一个 block 设备（如 sda）
     io_params = get_io_params()
     if io_params:
@@ -43,6 +44,7 @@ def collect_all_sysparams():
                 if opt.startswith("[") and opt.endswith("]"):
                     params["disk_scheduler"] = opt.strip("[]")
                     break
+    '''
 
     return params
 

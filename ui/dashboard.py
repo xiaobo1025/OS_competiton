@@ -8,7 +8,8 @@ import threading
 
 from monitor.collector import collect_all_metrics
 from optimizer.workload_classifier import predict_workload
-from optimizer.param_recommender import recommend_params
+#from optimizer.param_recommender import recommend_params
+from optimizer.predict_best_param import predict_best_param
 from controller.param_applier import apply_sysctl_params
 
 import workloads.cpu_bound as cpu_workload
@@ -48,11 +49,17 @@ if len(st.session_state.history) > MAX_HISTORY:
 if st.session_state.last_workload != workload:
     st.markdown(f"⚙️ 检测到负载变化：**{st.session_state.last_workload} ➜ {workload}**")
     #params = recommend_params(workload)
-    params = recommend_params(metrics)
-    for k, v in params.items():
-        apply_sysctl_params({k: v})
-        st.success(f"✅ 已应用参数：{k}={v}")
-    st.session_state.last_workload = workload
+    #params = recommend_params(metrics)
+
+    top_df = predict_best_param(workload, top_k=1)
+    if not top_df.empty:
+        param_fields = [k for k in top_df.columns if k.startswith("kernel.") or k.startswith("vm.") or k.startswith("net.")]
+        params = {k: top_df.iloc[0][k] for k in param_fields}
+        for k, v in params.items():
+            apply_sysctl_params({k: v})
+            st.success(f"✅ 已应用参数：{k}={v}")
+    else:
+        st.warning("⚠️ 没有找到推荐参数组合")
 
 # 系统指标面板
 df = pd.DataFrame(st.session_state.history)
@@ -69,9 +76,16 @@ st.dataframe(df.tail(10))
 
 # 一键优化按钮
 if st.button("🚀 一键智能优化当前系统参数"):
-    params = recommend_params(workload)
-    apply_sysctl_params(params)
-    st.success(f"✅ 已根据 {workload} 类型应用参数：{params}")
+    #params = recommend_params(workload)
+
+    top_df = predict_best_param(workload, top_k=1)
+    if not top_df.empty:
+        param_fields = [k for k in top_df.columns if k.startswith("kernel.") or k.startswith("vm.") or k.startswith("net.")]
+        params = {k: top_df.iloc[0][k] for k in param_fields}
+        apply_sysctl_params(params)
+        st.success(f"✅ 已根据 {workload} 类型应用参数：{params}")
+    else:
+        st.warning("⚠️ 没有找到推荐参数组合")
 
 # 📥 下载
 st.download_button("📥 下载完整监控日志", data=df.to_csv(index=False), file_name="system_monitor_log.csv")
